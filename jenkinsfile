@@ -2,6 +2,11 @@ pipeline {
     agent any
 
     stages {
+        stage ('Install Dependencies') {
+    steps {
+        bat 'npm install'
+    }
+}
         stage('Pull Docker Image') {
             steps {
                 script {
