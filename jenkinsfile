@@ -50,5 +50,12 @@ pipeline {
                 }
             }
         }
+
+    }
+
+    post {
+        always {
+            junit '**/test-results/junit.xml' // Make sure this matches the location of your junit.xml file
+        }
     }
 }
