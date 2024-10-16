@@ -2,17 +2,22 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') {
-            agent {
-                docker {
-                    image 'node:18-windows'
-                    reuseNode true
-                }
-            }
-
+        stage('Pull Docker Image') {
             steps {
                 script {
-                    // Windows-specific commands
+                    // Pull the Node.js Docker image
+                    bat '''
+                        echo "Pulling Node.js 18 Docker image"
+                        docker pull node:18
+                    '''
+                }
+            }
+        }
+
+        stage('Build') {
+            steps {
+                script {
+                    // Windows-specific commands for building the Node.js app
                     bat '''
                         echo "Running on Windows"
                         setlocal enabledelayedexpansion
