@@ -9,13 +9,26 @@ pipeline {
                     reuseNode true
                 }
             }
-
             steps {
                 script {
+                    def workspacePath = ''
+                    
                     if (isUnix()) {
-                        // Linux-specific commands
+                        // Linux/Unix-style paths
+                        workspacePath = pwd()
+                    } else {
+                        // Windows-style path translation for Docker
+                        workspacePath = powershell(returnStdout: true, script: '''
+                            $path = (Get-Location).Path
+                            $path -replace '\\', '/'
+                        ''').trim()
+                    }
+
+                    echo "Using workspace path: ${workspacePath}"
+
+                    // Execute build commands
+                    if (isUnix()) {
                         sh '''
-                            echo "Running on Linux"
                             ls -la
                             node --version
                             npm --version
@@ -24,9 +37,7 @@ pipeline {
                             ls -la
                         '''
                     } else {
-                        // Windows-specific commands
                         bat '''
-                            echo "Running on Windows"
                             dir
                             node --version
                             npm --version
