@@ -33,13 +33,19 @@ pipeline {
             }
         }
 
-        stage ('Test') {
-    steps {
-        bat '''
-        if exist build\\index.html ( echo File exists ) 
-        else ( echo File does not exist & exit /b 1 )
+     stage ('Test') {
+        steps {
+            bat '''
+            if exist build\\index.html (
+                echo File exists
+            ) else (
+                echo File does not exist
+                exit /b 1
+            )
         '''
+        }
     }
+
 }
 
     }
