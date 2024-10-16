@@ -3,7 +3,6 @@ pipeline {
 
     stages {
         stage('Build') {
-
             agent {
                 docker {
                     image 'node:18-alpine'
@@ -26,7 +25,8 @@ pipeline {
                         '''
                     } else {
                         // Windows-specific commands
-                        bat '''
+                        def workspaceUnixStyle = WORKSPACE.replace('\\', '/').replace('C:/', '/c/')
+                        bat """
                             echo "Running on Windows"
                             dir
                             node --version
@@ -34,7 +34,7 @@ pipeline {
                             npm ci
                             npm run build
                             dir
-                        '''
+                        """
                     }
                 }
             }
