@@ -5,7 +5,7 @@ pipeline {
         stage('Build') {
             agent {
                 docker {
-                    image 'mcr.microsoft.com/windows/servercore:ltsc2019'
+                    image 'node:18-windows'
                     reuseNode true
                 }
             }
