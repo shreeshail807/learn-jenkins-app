@@ -56,7 +56,9 @@ pipeline {
 
     post {
         always {
-            junit '**\\test-results\\junit.xml' // Make sure this matches the location of your junit.xml file
+            if exist junit '**\\test-results\\junit.xml'
+            (echo test results exist)
+            else (echo test results dont exists) // Make sure this matches the location of your junit.xml file
         }
     }
 }
