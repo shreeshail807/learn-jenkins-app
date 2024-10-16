@@ -24,8 +24,14 @@ pipeline {
                         dir
                         node --version
                         npm --version
-                        npm ci
-                        npm run build
+                        
+                        echo "Installing dependencies"
+                        npm ci || exit /b 1
+
+                        echo "Building the project"
+                        npm run build || exit /b 1
+                        
+                        echo "Listing directory after build"
                         dir
                         endlocal
                     '''
@@ -33,17 +39,17 @@ pipeline {
             }
         }
 
-     stage ('Test') {
-        steps {
-            bat '''
-            if exist build\\index.html (
-                echo File exists
-            ) else (
-                echo File does not exist
-                exit /b 1
-            )
-        '''
+        stage ('Test') {
+            steps {
+                bat '''
+                if exist build/index.html (
+                    echo File exists
+                ) else (
+                    echo File does not exist
+                    exit /b 1
+                )
+                '''
+            }
         }
     }
-  }
 }
