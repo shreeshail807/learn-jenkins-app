@@ -36,7 +36,7 @@ pipeline {
         stage ('Test') {
             steps {
                 bat '''
-                if exist build\\index.html (
+                if exist .\\build\\index.html (
                     echo File exists
                 ) else (
                     echo File does not exist
