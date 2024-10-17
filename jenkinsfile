@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     stages {
-        stage('Build and E2E') {
+        stage('E2E') {
     steps {
         script {
             // Pull the Node.js Docker image and run the build commands
