@@ -3,18 +3,30 @@ pipeline {
 
     stages {
         stage('E2E') {
+            agent {
+                docker {
+                    image 'mcr.microsoft.com/playwright:v1.48.1-noble'
+                }
+            }
             steps {
                 script {
                     // Pull the Node.js Docker image
+
+                    /* echo "Pulling Node.js 18 Docker image" */
+
                     bat '''
-                        echo "Pulling Node.js 18 Docker image"
-                        docker pull mcr.microsoft.com/playwright:v1.48.1-noble
+                        echo "Running on Windows"
+                        npm install -g serve
+                        serve -s build
+                        sleep 10
+                        npx playwright test --reporter=line
+                        
                     '''
                 }
             }
         }
 
-        stage('Build') {
+        /* stage('Build') {
             steps {
                 script {
                     // Windows-specific commands for building the Node.js app
@@ -28,7 +40,7 @@ pipeline {
                     '''
                 }
             }
-        }
+        } */
  
         stage('Test') {
             steps {
