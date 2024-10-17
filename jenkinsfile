@@ -6,12 +6,13 @@ pipeline {
     steps {
         script {
             // Pull the Node.js Docker image and run the build commands
+            // echo "Running on Windows" 
             bat '''
                 echo "Pulling Node.js 18 Docker image"
                 docker pull mcr.microsoft.com/playwright:v1.48.1-noble
                 
-                echo "Running on Windows"
-                npm install -g serve
+                
+                npm install serve
                 serve -s build
                 sleep 10
                 npx playwright test --reporter=line
