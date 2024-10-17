@@ -2,33 +2,23 @@ pipeline {
     agent any
 
     stages {
-        stage('E2E') {
-            steps {
-                script {
-                    // Pull the Node.js Docker image
-                    bat '''
-                        echo "Pulling Node.js 18 Docker image"
-                        docker pull mcr.microsoft.com/playwright:v1.48.1-noble
-                    '''
-                }
-            }
+        stage('Build and E2E') {
+    steps {
+        script {
+            // Pull the Node.js Docker image and run the build commands
+            bat '''
+                echo "Pulling Node.js 18 Docker image"
+                docker pull mcr.microsoft.com/playwright:v1.48.1-noble
+                
+                echo "Running on Windows"
+                npm install -g serve
+                serve -s build
+                sleep 10
+                npx playwright test --reporter=line
+            '''
         }
-
-        stage('Build') {
-            steps {
-                script {
-                    // Windows-specific commands for building the Node.js app
-                    bat '''
-                        echo "Running on Windows"
-                        npm install -g serve
-                        serve -s build
-                        sleep 10
-                        npx playwright test --reporter=line
-                        
-                    '''
-                }
-            }
-        }
+    }
+}
  
         stage('Test') {
             steps {
@@ -59,7 +49,7 @@ pipeline {
             ) else (
             echo test results don't exist
             )
-            
+
             publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'build', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: '', useWrapperFileDirectly: true])
             '''
         }
