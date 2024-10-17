@@ -57,11 +57,9 @@ pipeline {
     post {
         always {
             bat '''
-            if exist junit **\\test-results\\junit.xml (
+            if exist junit **\\test-results\\junit.xml
             echo test results exist
-            ) else (
-            echo test results don't exist
-            )
+            
             '''
         }
     }
