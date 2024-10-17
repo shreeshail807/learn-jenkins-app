@@ -49,8 +49,6 @@ pipeline {
             ) else (
             echo test results don't exist
             )
-
-            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'build', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: '', useWrapperFileDirectly: true])
             '''
         }
     }
